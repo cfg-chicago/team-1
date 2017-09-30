@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import extensions
 import config
 
+#We understand that the functions should be grouped in controller/file_x.py files, but its a hackathon :p
+
 app = Flask(__name__, template_folder='templates')
 db = extensions.connect_to_database()
 
@@ -32,16 +34,16 @@ def logout_route():
     session.pop('username')
     return redirect(url_for('login_route'))
 
-@app.route('/search', methods=['GET','POST'])
-def search_route():
-	search = request.form['search']
-	cur = db.cursor()
-	cur.execute("SELECT * FROM Journey WHERE event LIKE (%s)", (search))
-	res = cur.fetchall()
-	cur = db.cursor()
-	cur.execute("SELECT * FROM Class WHERE schoolname LIKE (%s)", (search))
-	res2 = cur.fetchall()
-	return render_template('search.html', journeys = res, classes = res2, term = search)
+# @app.route('/search', methods=['GET','POST'])
+# def search_route():
+# 	search = request.form['search']
+# 	cur = db.cursor()
+# 	cur.execute("SELECT * FROM Journey WHERE event LIKE "+'%bowl%')
+# 	res = cur.fetchall()
+# 	cur = db.cursor()
+# 	cur.execute("SELECT * FROM Class WHERE schoolname LIKE "+'%bowl%')
+# 	res2 = cur.fetchall()
+# 	return render_template('search.html', journeys = res, classes = res2, term = search)
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile_route():
