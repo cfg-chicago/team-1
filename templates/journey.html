@@ -2,20 +2,41 @@
 {% block content %}
 
 
-<form action="/journey" id="select_journey"></form>
-  
-  <select name="journeyid" form="select_journey">
+
+<div class="row">
+    <div class= "twelve columns">
+        <img src="../static/A_New_Movement_03.jpg" class="u-max-full=width">
+    </div>
+</div>
+
+<div class="row">
+    <div class="four columns">
+        <h2> View a Journey </h2>
+    </div>
+</div>
+<div class="row">
+    <select name="journeyid" class="u-pull-left" form="select_journey">
         {% for journey in journies %}
         <option form="select_journey" value="{{journey['journeyid']}}" name="name">{{journey['journeyid']}} - {{journey['event']}}</option>
         {% endfor %}
-        <input type="submit" form="select_journey" id="submit_journey">
-  </select>
-  <br><br>
-        {% for reaction in reactions %}
-            <a>{{reaction['username']}} said "{{reaction['reactiondata']}}"</a>
-            <br>
-        {% endfor %}
+        <input type="submit" class="u-pull-left" form="select_journey" id="submit_journey">
+    </select>
+</div>
 
+<form action="/journey" id="select_journey"></form>
+    {% for reaction in reactions %}
+    <div class="row">
+        <div class="two columns">
+            <h4>{{reaction['username']}}</h4>
+        </div>
+        <div class="ten columns">
+            <p>"{{reaction['reactiondata']}}"</p>
+        </div>
+    </div>
+    {% endfor %}
+    
+<br>
+<h5> Submit Journey Feedback </h5>
     <div class="typeform-widget" data-url="https://zi8.typeform.com/to/k1qcKo" style="width: 100%; height: 500px;" > </div> <script> (function() { var qs,js,q,s,d=document, gi=d.getElementById, ce=d.createElement, gt=d.getElementsByTagName, id="typef_orm", b="https://embed.typeform.com/"; if(!gi.call(d,id)) { js=ce.call(d,"script"); js.id=id; js.src=b+"embed.js"; q=gt.call(d,"script")[0]; q.parentNode.insertBefore(js,q) } })() </script> <div style="font-family: Sans-Serif;font-size: 12px;color: #999;opacity: 0.5; padding-top: 5px;" > powered by <a href="https://www.typeform.com/examples/?utm_campaign=k1qcKo&amp;utm_source=typeform.com-5078968-Basic&amp;utm_medium=typeform&amp;utm_content=typeform-embedded-poweredbytypeform&amp;utm_term=EN" style="color: #999" target="_blank">Typeform</a> </div>
   
 {% endblock %}
