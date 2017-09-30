@@ -10,7 +10,7 @@ CREATE TABLE User (
 );
 
 CREATE TABLE Journey (
-    journeyid Int PRIMARY KEY,
+    journeyid Int PRIMARY KEY AUTO_INCREMENT,
     event VARCHAR(200)
 );
 
