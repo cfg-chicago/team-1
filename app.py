@@ -125,25 +125,25 @@ def journey_route():
 
 @app.route('/class')
 def class_route():
-    classid = request.args.get('classid')
-    cur = db.cursor()
-    cur.execute("SELECT * FROM Class")
-    classes = cur.fetchall()
-    if not classid:
-        return render_template('class.html', classes=classes)
-    else:
-        cur = db.cursor()
-        cur.execute("SELECT username FROM User WHERE classid = (%s)", (classid))
-        users = cur.fetchall()
-        cur = db.cursor()
-        cur.execute("SELECT * FROM ClassJourney WHERE classid = (%s)",(classid))
-        classjournies = cur.fetchall()
-        classjourniesdetails = {}
-        for journey in classjournies:
-            cur = db.cursor()
-            cur.execute("SELECT event FROM Journey WHERE journeyid = (%s)", (journey['journeyid']))
-            classjourniesdetails[journey['journeyid']] = cur.fetchall()[0]
-        return render_template('class.html', classes = classes, users = users, classjournies = classjournies, classjourniesdetails = classjourniesdetails)
+	classid = request.args.get('classid')
+	cur = db.cursor()
+	cur.execute("SELECT * FROM Class")
+	classes = cur.fetchall()
+	if not classid:
+		return render_template('class.html', classes=classes)
+	else:
+		cur = db.cursor()
+		cur.execute("SELECT username FROM User WHERE classid = (%s)", (classid))
+		users = cur.fetchall()
+		cur = db.cursor()
+		cur.execute("SELECT * FROM ClassJourney WHERE classid = (%s)",(classid))
+		classjournies = cur.fetchall()
+		classjourniesdetails = {}
+		for journey in classjournies:
+			cur = db.cursor()
+			cur.execute("SELECT event FROM Journey WHERE journeyid = (%s)", (journey['journeyid']))
+			classjourniesdetails[journey['journeyid']] = cur.fetchall()[0]
+		return render_template('class.html', classes = classes, users = users, classjournies = classjournies, classjourniesdetails = classjourniesdetails)
 
 @app.route('/draw')
 def draw_route():
