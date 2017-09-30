@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
@@ -22,7 +21,35 @@
   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='normalize.css') }}">
   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='skeleton.css') }}">
 
-  
+  <!-- DRAWING BOARD -->
+<!-- 
+  <link rel=stylesheet type=text/javascript href="{{ url_for('static', filename='prism.js') }}">
+  <link rel=stylesheet type=text/javascript href="{{ url_for('static', filename='script.js') }}">
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='drawingboard.min.css') }}">
+ -->
+
+  <script src="{{ url_for('static', filename='prism.js') }}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='drawingboard.min.css') }}">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+
+<style>
+    /*
+    * drawingboards styles: set the board dimensions you want with CSS
+    */
+
+    .board {
+      margin: 0 auto;
+      width: 500px;
+      height: 500px;
+    }
+    #board {
+      width: 700px;
+      height: 400px;
+    }
+</style>
+
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
