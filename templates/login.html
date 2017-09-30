@@ -1,16 +1,22 @@
 
 {% extends "index.html" %}
 {% block content %}
-    <h1>Login</h1>
-	
-	<form method="post" id="login_form">
-		<h3>Username:</h3>
-		<input type="text" form="login_form" id="login_username_input" name="username">
-		<br>
-		<h3>Password:</h3>
-		<input type="password" form="login_form" id="login_password_input" name="password">
-		<br>
-		<input type="submit" form="login_form" id="login_submit">
-	</form>
+	<div class="row">
+		<div class="nine columns">
+			  <img src="../static/kCura_3D_Printing_Lab_05.jpg" width="100%">
+		</div>
+		<div class="three columns">
+		    <h1>Login</h1>
+			<form method="post" id="login_form">
+				<h3>Username:</h3>
+				<input type="text" form="login_form" id="login_username_input" name="username">
+				<br>
+				<h3>Password:</h3>
+				<input type="password" form="login_form" id="login_password_input" name="password">
+				<br>
+				<input type="submit" form="login_form" id="login_submit">
+			</form>
+		</div>
+	</div>
 	
 {% endblock %}
