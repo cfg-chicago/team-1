@@ -24,7 +24,7 @@ CREATE TABLE Reactions (
 
 CREATE TABLE Reflection (
     journeyid Int,
-    apiurl VARCHAR(100),
+    text VARCHAR(5000),
     username VARCHAR(50),
     public Int,
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -32,7 +32,7 @@ CREATE TABLE Reflection (
 
 CREATE TABLE Feedback (
     journeyid Int,
-    apiurl VARCHAR(100),
+    apiurl VARCHAR(400),
     username VARCHAR(50),
     public Int,
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
