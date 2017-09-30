@@ -1,18 +1,28 @@
 {% extends "index.html" %}
 {% block content %}
 
-    <form action="/class" id="select_class">
-        <input type="submit">
-      </form>
-      
-      <select name="classid" form="select_class">
-            {% for class in classes %}
-            <option form="select_class" value="{{class['classid']}}" name="name">{{class['schoolname']}} - {{class['gradyear']}}</option>
-            {% endfor %}
-            <input type="submit" form="select_class" id="submit_journey">
-      </select>
+<div class="row">
+    <div class= "twelve columns">
+        <img src="../static/Nokia_01_edit.jpg" class="u-max-full=width">
+    </div>
+</div>
 
-    <h1> Class Roster </h1>
+<div class="row">
+    <div class="four columns">
+        <h2> View a Class </h2>
+    </div>
+</div>
+
+<div class="row">
+    <select name="classid" form="select_class">
+        {% for class in classes %}
+        <option form="select_class" value="{{class['classid']}}" name="name">{{class['schoolname']}} - {{class['gradyear']}}</option>
+        {% endfor %}
+        <input type="submit" form="select_class" id="submit_journey">
+    </select>
+</div>
+
+    <h5> Class Roster </h5>
     <table>
         <tr>
             <th> Name </th>
@@ -24,7 +34,7 @@
         {% endfor %}
     </table>
 
-    <h1> Class Journeys </h1>
+    <h5> Class Journeys </h5>
     <table>
         <tr>
             <th> Journey </th>

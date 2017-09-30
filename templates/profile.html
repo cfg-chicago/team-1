@@ -7,7 +7,7 @@
 
 <div class="row">
     <div class="four columns">
-        <a><img src="../static/{{pic}}"></a>
+        <a><img src="../static/{{pic}}" class="u-max-full-width"></a>
         <h3>{{username}}'s Profile!</h3>
         <h>Bio</h>
         <a>{{bio}}</a>
@@ -17,9 +17,10 @@
     </div>
     <div class="eight columns">
 
+        <h2> Journeys Explored </h2>
+
         {% for journey in journies %}
-            <a class="button button-primary" href="{{url_for('journey_route', journeyid=journey['journeyid'])}}">{{journey['event']}}</a>
-            <br>
+            <h3 href="{{url_for('journey_route', journeyid=journey['journeyid'])}}">{{journey['event']}}</h3>
             <h5>Reflection</h5>
             {% if journey['event'] in reflections %}
                 {% if reflections[journey['event']]['public'] or session['username'] == username%}
