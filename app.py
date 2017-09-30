@@ -20,18 +20,8 @@ def login_route():
 		if cursor.rowcount != 0:
 			data = cursor.fetchall()[0]
 			if data['password'] == password:
-				cursor.execute('''SELECT bio FROM User WHERE username = \"{}\"'''.format(username))
-				bio = cursor.fetchall()[0]['bio']
-
-				cursor.execute('''SELECT journeyid FROM UserJourney WHERE username = \"{}\"'''.format(username))
-				userjournies = cursor.fetchall()
-
-				# Turn tuple of single-tuple items into list
-				userjournies = [x['journeyid'] for x in userjournies] 
 				session['username'] = username
-				return redirect(url_for('profile_route', username=username,
-													userjournies=userjournies,
-													bio=bio))
+				return redirect(url_for('profile_route', username=session['username']))
 			else:
 				errors.append("Wrong password")
 		return render_template('login.html', errors= errors)
@@ -39,23 +29,48 @@ def login_route():
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout_route():
-	session.pop(username)
+	session.pop('username')
 	return redirect(url_for('login_route'))
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile_route():
+	while True:	#Not actually a loop, but we wanna be able to break
+		if request.method == 'POST':
+			if 'reflection' not in request.form:
+				break
+			ref = request.form['reflection']
+			public = 0
+			if 'public' in request.form:
+				public = 1
+			id = request.form['id']
+			cur = db.cursor()
+			cur.execute("UPDATE Reflection SET text = (%s), public = (%s) WHERE journeyid = (%s) AND username = (%s)", (ref, public, id, session['username']))
+		break
+	if 'username' not in session:
+			return redirect('403.html', 403)
 	username = request.args.get('username')
-	bio = request.args.get('bio')
-	userjournies = request.args.getlist('userjournies')
+	if username == None:
+		username = session['username']
+	cur = db.cursor()
+	cur.execute("SELECT * from User WHERE username = (%s)", (username))
+	data = cur.fetchall()[0]
+	bio = data['bio']
+	classid = data['classid']
+	cur = db.cursor()
+	cur.execute('''SELECT journeyid FROM UserJourney WHERE username = \"{}\"'''.format(username))
+	userjournies = cur.fetchall()
+	# Turn tuple of single-tuple items into list
+	userjournies = [x['journeyid'] for x in userjournies] 
 	journies = []
 	reflections = {}
 	for x in userjournies:
 		cur = db.cursor()
 		cur.execute("SELECT * FROM Journey WHERE journeyid = (%s)", (x))
-		journey = cur.fetchall()[0]
-		journies.append(journey)
+		if cur.rowcount:
+			journey = cur.fetchall()[0]
+			journies.append(journey)
 		cur = db.cursor()
-		cur.execute("SELECT * FROM Reflection WHERE journeyid = (%s)", (x))
+		cur.execute("SELECT * FROM Reflection WHERE journeyid = (%s) AND username = (%s)", (x, username))
 		if cur.rowcount:
 			reflection = cur.fetchall()[0]
 			reflections[journey['event']] = reflection
@@ -64,36 +79,41 @@ def profile_route():
 
 @app.route('/journey', methods=['GET', 'POST'])
 def journey_route():
-    journey_selected = request.args.get('journey_selected')
-    
-    cursor.execute('''SELECT * FROM Journey''')
-    data = cursor.fetchall()
-    journies = {x[1]:x[0] for x in data}
+	journeyid = request.args.get('journeyid')
+	cur = db.cursor()
+	cur.execute('''SELECT * FROM Journey''')
+	journies = cur.fetchall()
+	if journeyid == None:
+		return render_template('journey.html', journey_selected=None, journies=journies)
 
-    stuff = []
-    for i in journies.values():
-        cursor.execute('''SELECT reactiondata FROM Reactions WHERE journeyid = {}'''.format(i))
-        data = cursor.fetchall()
-        stuff.append(data)
-        #raise
-
-    raise
-
-    if journey_selected == None:
-        return render_template('journey.html', journey_selected=None, journies=data)
-    else:
-        journies = request.args.get('journies')
-        reactions = request.args.get('reactions')
+	cur = db.cursor()
+	cur.execute("SELECT username, reactiondata FROM Reactions WHERE journeyid = (%s)", (journeyid))
+	reacts = cur.fetchall()
+	return render_template('journey.html', journey_selected=None, journies=journies, reactions = reacts)
 
     
 
 @app.route('/class')
 def class_route():
-    gradyear = request.args.get('gradyear')
-    if gradyear == None:
-        cursor.execute('''SELECT MAX(gradyear) FROM Class''')
-        #gradyear = 
-    return render_template('index.html')
+	classid = request.args.get('classid')
+	cur = db.cursor()
+	cur.execute("SELECT * FROM Class")
+	classes = cur.fetchall()
+	if not classid:
+		return render_template('class.html', classes=classes)
+	else:
+		cur = db.cursor()
+		cur.execute("SELECT username FROM User WHERE classid = (%s)", (classid))
+		users = cur.fetchall()
+		cur = db.cursor()
+		cur.execute("SELECT * FROM ClassJourney WHERE classid = (%s)",(classid))
+		classjournies = cur.fetchall()
+		classjourniesdetails = {}
+		for journey in classjournies:
+			cur = db.cursor()
+			cur.execute("SELECT event FROM Journey WHERE journeyid = (%s)", (journey['journeyid']))
+			classjourniesdetails[journey['journeyid']] = cur.fetchall()[0]
+		return render_template('class.html', classes = classes, users = users, classjournies = classjournies, classjourniesdetails = classjourniesdetails)
 
 
 if __name__ == "__main__":

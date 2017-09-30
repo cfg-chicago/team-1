@@ -52,7 +52,7 @@ CREATE TABLE UserJourney (
 CREATE TABLE ClassJourney (
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     classid INT,
-    journeyid Int PRIMARY KEY
+    journeyid Int
 );
 
 INSERT INTO Journey(journeyid, event)
@@ -63,13 +63,13 @@ INSERT INTO Journey(journeyid, event)
 VALUES (3, "Ping Pong");
 
 INSERT INTO User(username, password, classid, bio, picture)
-VALUES ("Sidharth", "hunter2", 2020, "my name is sid", "test.jpg");
+VALUES ("Sidharth", "hunter2", 1, "my name is sid", "test.jpg");
 INSERT INTO User(username, password, classid, bio, picture)
-VALUES ("Kevin", "hunter2", 2020, "my name is kevin", "new.jpg");
+VALUES ("Kevin", "hunter2", 1, "my name is kevin", "new.jpg");
 INSERT INTO User(username, password, classid, bio, picture)
-VALUES ("Zi", "hunter2", 2020, "my name is zi", "test.jpg");
+VALUES ("Zi", "hunter2", 2, "my name is zi", "test.jpg");
 INSERT INTO User(username, password, classid, bio, picture)
-VALUES ("Trent", "hunter2", 2020, "my name is trent", "new.jpg");
+VALUES ("Trent", "hunter2", 3, "my name is trent", "new.jpg");
 
 INSERT INTO UserJourney(username, journeyid)
 VALUES ("Kevin", 1);
@@ -95,3 +95,17 @@ VALUES ("text", "Trent", 1, "Stubbed my little toe Bowling");
 
 INSERT INTO Reflection(journeyid, text, username, public)
 VALUES (1, "I had so much fun!@@@!!#$!#!", "Kevin", 1);
+
+INSERT INTO Class(schoolname, gradyear)
+VALUES ("Chicago's best", 2019);
+INSERT INTO Class(schoolname, gradyear)
+VALUES ("Chicago's second best", 2019);
+INSERT INTO Class(schoolname, gradyear)
+VALUES ("Chicago's second best", 2020);
+
+INSERT INTO ClassJourney(classid, journeyid)
+VALUES (1,1);
+INSERT INTO ClassJourney(classid, journeyid)
+VALUES (1,2);
+INSERT INTO ClassJourney(classid, journeyid)
+VALUES (2,1);

@@ -1,23 +1,20 @@
 {% extends "index.html" %}
 {% block content %}
 
-    {% if not journeyselected %}
-    <select>
-    {% for journey in journies %}
-    <form method="post" id="select_journey">
-            <option form="select_journey" value="{{journey}}" name="{{journey['journeyid']}}">{{journey['name']}}</option>
-            <br>
-            <input type="submit" form="select_journey" id="submit_journey">
-        </form>
-        <option value="{{journey}}">{{journey}}</option>
-    {% endfor %}
-    {% else %}
+
+<form action="/journey" id="select_journey"></form>
+  
+  <select name="journeyid" form="select_journey">
+        {% for journey in journies %}
+        <option form="select_journey" value="{{journey['journeyid']}}" name="name">{{journey['journeyid']}} - {{journey['event']}}</option>
+        {% endfor %}
+        <input type="submit" form="select_journey" id="submit_journey">
+  </select>
+  <br><br>
         {% for reaction in reactions %}
-            {{reaction}}
+            <a>{{reaction['username']}} said "{{reaction['reactiondata']}}"</a>
             <br>
-        {% endif %}
-    {% endif %}
-    </select>
+        {% endfor %}
 
     <div class="typeform-widget" data-url="https://zi8.typeform.com/to/k1qcKo" style="width: 100%; height: 500px;" > </div> <script> (function() { var qs,js,q,s,d=document, gi=d.getElementById, ce=d.createElement, gt=d.getElementsByTagName, id="typef_orm", b="https://embed.typeform.com/"; if(!gi.call(d,id)) { js=ce.call(d,"script"); js.id=id; js.src=b+"embed.js"; q=gt.call(d,"script")[0]; q.parentNode.insertBefore(js,q) } })() </script> <div style="font-family: Sans-Serif;font-size: 12px;color: #999;opacity: 0.5; padding-top: 5px;" > powered by <a href="https://www.typeform.com/examples/?utm_campaign=k1qcKo&amp;utm_source=typeform.com-5078968-Basic&amp;utm_medium=typeform&amp;utm_content=typeform-embedded-poweredbytypeform&amp;utm_term=EN" style="color: #999" target="_blank">Typeform</a> </div>
   

@@ -1,16 +1,38 @@
 {% extends "index.html" %}
 {% block content %}
 
+    <form action="/class" id="select_class">
+        <input type="submit">
+      </form>
+      
+      <select name="classid" form="select_class">
+            {% for class in classes %}
+            <option form="select_class" value="{{class['classid']}}" name="name">{{class['schoolname']}} - {{class['gradyear']}}</option>
+            {% endfor %}
+            <input type="submit" form="select_class" id="submit_journey">
+      </select>
+
     <h1> Class Roster </h1>
     <table>
         <tr>
             <th> Name </th>
         </tr>
-        {% for student in class %}
+        {% for student in users %}
         <tr>
-            <td><a href="">student['username']</a></td>
+            <td><a href="{{url_for('profile_route', username=student['username'])}}">{{student['username']}}</a></td>
         </tr>
         {% endfor %}
     </table>
-  
+
+    <h1> Class Journeys </h1>
+    <table>
+        <tr>
+            <th> Journey </th>
+        </tr>
+        {% for journey in classjournies %}
+        <tr>
+            <td><a href="{{url_for('journey_route', journeyid=journey['journeyid'])}}">{{classjourniesdetails[journey['journeyid']]['event']}}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

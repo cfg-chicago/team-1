@@ -43,6 +43,7 @@
           <div class="sixteen columns">
               <ul>
                   {% if 'username' in session %}
+                  <li><a href="{{url_for('logout_route')}}">Logout</a></li>
                   <li><a href="{{url_for('profile_route')}}">My Profile </a></li>
                   {% else %}
                   <li><a href="{{url_for('login_route')}}">Login</a></li>

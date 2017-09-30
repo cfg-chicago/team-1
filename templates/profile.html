@@ -4,33 +4,37 @@
 {% extends "index.html" %}
 
 {% block content %}
-<h3>{{session['username']}}'s Profile!</h3>
+<h3>{{username}}'s Profile!</h3>
 <h>Bio</h>
 <a>{{bio}}</a>
 <br>
 <a>{{class}}</a>
 <br>
 {% for journey in journies %}
-<a href="{{url_for('journey_route', journeyid=journeyid)}}">{{journey['event']}}</a>
+    <a href="{{url_for('journey_route', journeyid=journey['journeyid'])}}">{{journey['event']}}</a>
 
-<br>
-<h>Reflection:</h>
-<br>
-{% if journey['event'] in reflections %}
-    {% if reflections[journey['event']]['public'] %}
-        {{reflections[journey['event']]['apiurl']}}
-    {% endif %}
-{% endif %}
-{% if 'username' in session %}
-    {% if session['username'] == profilename %}
-        <form method="post" id="add_reflection">
-            <h3>Reflection:</h3>
-            <input type="text" form="add_reflection" id="add_reflection_input" name="reflection">
+    <br>
+    <h>Reflection:</h>
+    <br>
+    {% if journey['event'] in reflections %}
+        {% if reflections[journey['event']]['public'] or session['username'] == username%}
+            {{reflections[journey['event']]['text']}}
             <br>
-            <input type="submit" form="add_reflection" id="new_submit">
-        </form>
+        {% endif %}
     {% endif %}
-{% endif %}
-<br>
+    {% if 'username' in session %}
+        {% if session['username'] == username %}
+            <form method="post" id="add_reflection_{{journey['journeyid']}}">
+                <input type="text" placeholder="Write Reflection" form="add_reflection_{{journey['journeyid']}}" id="add_reflection_input" name="reflection">
+                <br>
+                <input form="add_reflection_{{journey['journeyid']}}" id="checkBox" type="checkbox" name="public">Make public?</input>
+                <br>
+                <input type="hidden" name="id" value="{{journey['journeyid']}}">
+                <br>
+                <input type="submit" form="add_reflection_{{journey['journeyid']}}" id="new_submit">
+            </form>
+        {% endif %}
+    {% endif %}
+    <br>
 {% endfor %}
 {% endblock %}
