@@ -43,12 +43,12 @@
           <div class="sixteen columns">
               <ul>
                   {% if 'username' in session %}
-                  <li><a href="profile.html"> Profile </a></li>
+                  <li><a href="{{url_for('profile.profile_route')}}"> Profile </a></li>
                   {% else %}
-                  <li><a href="login.html">Login</a></li>
+                  <li><a href="{{url_for('login.login_route')}}">Login</a></li>
                   {% endif %}
-                  <li><a href="journey.html">Journeys</a></li>
-                  <li><a href="class.html">Class</a></li>
+                  <li><a href="{{url_for('journey.journey_route')}}">Journeys</a></li>
+                  <li><a href="{{url_for('class.class_route')}}">Class</a></li>
               </ul>
           </div>
       </nav>
