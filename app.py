@@ -93,6 +93,23 @@ def journey_route():
     reacts = cur.fetchall()
     return render_template('journey.html', journey_selected=None, journies=journies, reactions = reacts)
 
+@app.route('/addjourney', methods=['GET', 'POST'])
+def add_journey_route():
+	classid = request.args.get('ref')
+	if request.method == 'POST':
+		if 'name' not in request.form:
+			return render_template('addjourney.html', ref = classid)
+		name = request.form['name']
+		cur = db.cursor()
+		cur.execute("INSERT INTO Journey(event) VALUES((%s))", (name))
+		cur = db.cursor()
+		cur.execute("SELECT MAX(journeyid) FROM Journey")
+		journeyid = cur.fetchall()[0]['MAX(journeyid)']
+		cur = db.cursor()
+		cur.execute("INSERT INTO ClassJourney(classid, journeyid) VALUES((%s), (%s))", ((classid, journeyid)))
+		return redirect(url_for('class_route', classid = classid))
+	else:
+		return render_template('addjourney.html', ref = classid)
     
 
 @app.route('/class')
