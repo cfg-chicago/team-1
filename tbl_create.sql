@@ -49,3 +49,12 @@ CREATE TABLE ClassJourney (
     classid INT,
     journeyid Int
 )
+
+INSERT INTO Journey(journeyid, event)
+VALUES (10, "boi");
+
+INSERT INTO User(username, password, classid, bio, picture)
+VALUES ("sidharth", "hunter2", 2020, "i don't know flask", "test.jpg");
+
+INSERT INTO User(username, password, classid, bio, picture)
+VALUES ("kevin", "hunter2", 2020, "working on flask", "new.jpg");
