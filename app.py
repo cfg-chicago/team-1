@@ -121,8 +121,9 @@ def draw_route():
     if 'username' not in session:
             return redirect('403.html', 403)
 
-    session['username'] = username
-    return render_template('draw.html')
+    username = session['username']
+    journey = request.args.get('journeyud')
+    return render_template('draw.html', journeyid=journey, username=username)
 
 
 if __name__ == "__main__":
