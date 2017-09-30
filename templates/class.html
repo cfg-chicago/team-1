@@ -25,13 +25,14 @@
     </table>
 
     <h1> Class Journeys </h1>
+    <a href="{{url_for('add_journey_route', ref=classid)}}">Add a Journey!</a>
     <table>
         <tr>
             <th> Journey </th>
         </tr>
         {% for journey in classjournies %}
         <tr>
-            <td><a href="{{url_for('journey_route', journeyid=journey['journeyid'])}}">{{classjourniesdetails[journey['journeyid']]['event']}}</a></td>
+            <td><a href="{{url_for('journey_route', ref=classid, journeyid=journey['journeyid'])}}">{{classjourniesdetails[journey['journeyid']]['event']}}</a></td>
         </tr>
         {% endfor %}
     </table>

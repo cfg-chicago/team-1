@@ -77,6 +77,24 @@ def profile_route():
 			reflections[journey['event']] = reflection
 	return render_template('profile.html', username = username, bio = bio, userjournies = userjournies, journies = journies, reflections=reflections, pic=pic)
 
+@app.route('/addjourney', methods=['GET', 'POST'])
+def add_journey_route():
+	classid = request.args.get('ref')
+	if request.method == 'POST':
+		if 'name' not in request.form:
+			return render_template('addjourney.html', ref = classid)
+		name = request.form['name']
+		cur = db.cursor()
+		cur.execute("INSERT INTO Journey(event) VALUES((%s))", (name))
+		cur = db.cursor()
+		cur.execute("SELECT MAX(journeyid) FROM Journey")
+		journeyid = cur.fetchall()[0]['MAX(journeyid)']
+		cur = db.cursor()
+		cur.execute("INSERT INTO ClassJourney(classid, journeyid) VALUES((%s), (%s))", ((classid, journeyid)))
+		return redirect(url_for('class_route', classid = classid))
+	else:
+		return render_template('addjourney.html', ref = classid)
+
 
 @app.route('/journey', methods=['GET', 'POST'])
 def journey_route():
@@ -114,7 +132,7 @@ def class_route():
 			cur = db.cursor()
 			cur.execute("SELECT event FROM Journey WHERE journeyid = (%s)", (journey['journeyid']))
 			classjourniesdetails[journey['journeyid']] = cur.fetchall()[0]
-		return render_template('class.html', classes = classes, users = users, classjournies = classjournies, classjourniesdetails = classjourniesdetails)
+		return render_template('class.html', classes = classes, classid = classid, users = users, classjournies = classjournies, classjourniesdetails = classjourniesdetails)
 
 
 if __name__ == "__main__":
