@@ -6,9 +6,11 @@
         <tr>
             <th> Name </th>
         </tr>
+        {% for student in class %}
         <tr>
-            {% for student in class %}
+            <td><a href="">student['username']</a></td>
         </tr>
+        {% endfor %}
     </table>
   
 {% endblock %}

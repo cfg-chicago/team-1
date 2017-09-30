@@ -1,5 +1,26 @@
 {% extends "index.html" %}
 
 {% block content %}
-
+<h3>{{username}}'s Profile!</h3>
+<h>Bio</h>
+<a>{{bio}}</a>
+{% for journeyid in userjournies %}
+<a href="{{url_for('app.journey_route', username='username')}}">{{journies['journeyid']['event']}}</h>
+<br>
+<h>Reflection</h>
+{% if reflection['journeyid']['public'] %}
+    {{reflection['journeyid']['apiurl']}}
+{% endif %}
+{% if 'username' in session %}
+    {% if session['username'] == profilename %}
+        <form method="post" id="add_reflection">
+            <h3>Reflection:</h3>
+            <input type="text" form="add_reflection" id="add_reflection_input" name="reflection">
+            <br>
+            <input type="submit" form="add_reflection" id="new_submit">
+        </form>
+    {% endif %}
+{% endif %}
+<br>
+{% endfor %}
 {% endblock %}
