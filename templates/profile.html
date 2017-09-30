@@ -4,6 +4,7 @@
 {% extends "index.html" %}
 
 {% block content %}
+<a><img src="../static/{{pic}}"></a>
 <h3>{{username}}'s Profile!</h3>
 <h>Bio</h>
 <a>{{bio}}</a>
@@ -26,12 +27,12 @@
         {% if session['username'] == username %}
             <form method="post" id="add_reflection_{{journey['journeyid']}}">
                 <input type="text" placeholder="Write Reflection" form="add_reflection_{{journey['journeyid']}}" id="add_reflection_input" name="reflection">
+                <input type="submit" form="add_reflection_{{journey['journeyid']}}" id="new_submit">
                 <br>
                 <input form="add_reflection_{{journey['journeyid']}}" id="checkBox" type="checkbox" name="public">Make public?</input>
                 <br>
                 <input type="hidden" name="id" value="{{journey['journeyid']}}">
-                <br>
-                <input type="submit" form="add_reflection_{{journey['journeyid']}}" id="new_submit">
+                
             </form>
         {% endif %}
     {% endif %}

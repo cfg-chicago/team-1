@@ -56,6 +56,7 @@ def profile_route():
 	data = cur.fetchall()[0]
 	bio = data['bio']
 	classid = data['classid']
+	pic = data['picture']
 	cur = db.cursor()
 	cur.execute('''SELECT journeyid FROM UserJourney WHERE username = \"{}\"'''.format(username))
 	userjournies = cur.fetchall()
@@ -74,7 +75,7 @@ def profile_route():
 		if cur.rowcount:
 			reflection = cur.fetchall()[0]
 			reflections[journey['event']] = reflection
-	return render_template('profile.html', username = username, bio = bio, userjournies = userjournies, journies = journies, reflections=reflections)
+	return render_template('profile.html', username = username, bio = bio, userjournies = userjournies, journies = journies, reflections=reflections, pic=pic)
 
 
 @app.route('/journey', methods=['GET', 'POST'])
