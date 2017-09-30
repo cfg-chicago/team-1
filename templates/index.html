@@ -42,9 +42,13 @@
       <nav class="container primary">
           <div class="sixteen columns">
               <ul>
-                  <li><a href="profile.html">Home</a></li>
-                  <li><a href="#">Journeys</a></li>
-                  <li><a href="#">Profile</a></li>
+                  {% if 'username' in session %}
+                  <li><a href="profile.html"> Profile </a></li>
+                  {% else %}
+                  <li><a href="login.html">Login</a></li>
+                  {% endif %}
+                  <li><a href="journey.html">Journeys</a></li>
+                  <li><a href="class.html">Class</a></li>
               </ul>
           </div>
       </nav>
