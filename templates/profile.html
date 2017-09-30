@@ -17,9 +17,12 @@
     </div>
     <div class="eight columns">
 
+        <h2> Journeys Explored </h2>
+
         {% for journey in journies %}
-            <a class="button button-primary" href="{{url_for('journey_route', journeyid=journey['journeyid'])}}">{{journey['event']}}</a>
-            <br>
+            <h3 href="{{url_for('journey_route', journeyid=journey['journeyid'])}}">{{journey['event']}}</h3>
+            <a class="button button-primary" href="{{url_for('draw_route', username=username, journeyid=journey['journeyid'])}}">Submit a reaction...</a>
+
             <h5>Reflection</h5>
             {% if journey['event'] in reflections %}
                 {% if reflections[journey['event']]['public'] or session['username'] == username%}
@@ -44,3 +47,5 @@
     </div>
 
 {% endblock %}
+
+

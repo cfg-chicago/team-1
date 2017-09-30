@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Drawingboard.js: a simple canvas based drawing app that you can integrate easily on your website.</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+
+		<link rel="stylesheet" href="../drawingboard.js/example/prism.css">
+		<link rel="stylesheet" href="../drawingboard.js/example/website.css">
+
+		<!-- in a production environment, just include the minified css. It contains the css of the board and the default controls (size, nav, colors): -->
+		<link rel="stylesheet" href="../drawingboard.js/dist/drawingboard.min.css">
+
+		<style>
+		/*
+		* drawingboards styles: set the board dimensions you want with CSS
+		*/
+
+		.board {
+			margin: 0 auto;
+			width: 300px;
+			height: 300px;
+		}
+
+		#board {
+			width: 700px;
+			height: 400px;
+		}
+
+		</style>
+	</head>
+	<body>
+
+		<div id="container">
+			<div class="board" data="1">
+				<h1>Another custom one</h1>
+				<div class="board" id="drawing_board"></div>
+			</div>
+
+		</div>
+
+		<!-- jquery is required - zepto might do the trick too -->
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+		<!-- in a production environment, just include the minified script. It contains the board and the default controls (size, nav, colors, download): -->
+		<script src="../drawingboard.js/dist/drawingboard.min.js"></script>
+
+
+		<!-- an input[type=range] poyfill is more than recommanded if you want to use the default "size" control with the "range" type *on every browser*
+			the polyfill is loaded only if necessary via yepnope http://yepnopejs.com/
+
+			note this is totally not required if the size control is set to "auto" or "dropdown" - the control will work with every browser with an alternate view -->
+		<script src="../drawingboard.js/example/yepnope.js"></script>
+
+
+		<script data="1">
+			var customBoard2 = new DrawingBoard.Board('drawing_board', {
+				controls: [
+					'Color',
+					{ Size: { type: 'dropdown' } },
+					{ DrawingMode: { filler: false } },
+					'Navigation',
+					'Download'
+				],
+				size: 1,
+				webStorage: 'session',
+				enlargeYourContainer: true
+			});
+		</script>
+
+		<!-- totally not drawingboard-related code -->
+		<script src="../drawingboard.js/example/prism.js"></script>
+		<script src="../drawingboard.js/example/script.js"></script>
+		<script>
+
+</script>
+	</body>
+</html>
