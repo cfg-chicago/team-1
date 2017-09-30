@@ -1,11 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+
 {% extends "index.html" %}
 
 {% block content %}
-<h3>{{username}}'s Profile!</h3>
+<h3>{{session['username']}}'s Profile!</h3>
 <h>Bio</h>
 <a>{{bio}}</a>
+<a>{{class}}</a>
 {% for journeyid in userjournies %}
 <a href="{{url_for('app.journey_route', username='username')}}">{{journies['journeyid']['event']}}</h>
+
 <br>
 <h>Reflection</h>
 {% if reflection['journeyid']['public'] %}
