@@ -1,0 +1,56 @@
+{% extends "index.html" %}
+{% block content %}
+
+{% if type == 'draw' %}
+
+		<div id="container">
+      <div class="board" data="1">
+        <h2>Draw a reaction!</h2>
+        <div class="board" id="drawing_board_{{journeyid}}_{{username}}"></div>
+      </div>
+
+    </div>
+
+    <!-- jquery is required - zepto might do the trick too -->
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+    <!-- in a production environment, just include the minified script. It contains the board and the default controls (size, nav, colors, download): -->
+    <script src="{{ url_for('static', filename='drawingboard.js') }}"></script>
+
+  <link rel=stylesheet type=text/javascript href="{{ url_for('static', filename='prism.js') }}">
+
+    <!-- an input[type=range] poyfill is more than recommanded if you want to use the default "size" control with the "range" type *on every browser*
+      the polyfill is loaded only if necessary via yepnope http://yepnopejs.com/
+
+      note this is totally not required if the size control is set to "auto" or "dropdown" - the control will work with every browser with an alternate view -->
+    <script src="{{ url_for('static', filename='yepnope.js') }}"></script>
+    <script data="1">
+      var customBoard2 = new DrawingBoard.Board('drawing_board_{{journeyid}}_{{username}}', {
+        controls: [
+          'Color',
+          { Size: { type: 'dropdown' } },
+          { DrawingMode: { filler: false } },
+          'Navigation',
+          'Download'
+        ],
+        size: 1,
+        webStorage: false,
+        enlargeYourContainer: true
+      });
+    </script>
+
+    <script src="{{ url_for('static', filename='prism.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </div>
+
+{% else %}
+
+<form method="post" id="add_reaction_{{journeyid}}">
+                        <input type="text" class="u-full-width" placeholder="Write a comment" form="add_reaction_{{journeyid}}" id="add_reaction_input" name="reaction">
+                        <input type="submit" form="add_reaction_{{journeyid}}" id="new_submit">
+                        <br>
+                        <input type="hidden" name="id" value="{{journeyid}}">
+</form>
+{% endif %}
+
+{% endblock %}

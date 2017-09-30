@@ -2,7 +2,7 @@ env = dict(
 	host = '0.0.0.0',
 	port = 4000,
 	user = 'root',
-	password = 'team1',
+	password = '',
 	db = 'cfg')
 
 class Config(object):

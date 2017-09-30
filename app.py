@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import extensions
 import config
-
-#We understand that the functions should be grouped in controller/file_x.py files, but its a hackathon :p
+import random
 
 app = Flask(__name__, template_folder='templates')
 db = extensions.connect_to_database()
@@ -33,17 +32,6 @@ def login_route():
 def logout_route():
     session.pop('username')
     return redirect(url_for('login_route'))
-
-# @app.route('/search', methods=['GET','POST'])
-# def search_route():
-# 	search = request.form['search']
-# 	cur = db.cursor()
-# 	cur.execute("SELECT * FROM Journey WHERE event LIKE "+'%bowl%')
-# 	res = cur.fetchall()
-# 	cur = db.cursor()
-# 	cur.execute("SELECT * FROM Class WHERE schoolname LIKE "+'%bowl%')
-# 	res2 = cur.fetchall()
-# 	return render_template('search.html', journeys = res, classes = res2, term = search)
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile_route():
@@ -90,24 +78,6 @@ def profile_route():
             reflections[journey['event']] = reflection
     return render_template('profile.html', username = username, bio = bio, userjournies = userjournies, journies = journies, reflections=reflections, pic=pic)
 
-@app.route('/addjourney', methods=['GET', 'POST'])
-def add_journey_route():
-	classid = request.args.get('ref')
-	if request.method == 'POST':
-		if 'name' not in request.form:
-			return render_template('addjourney.html', ref = classid)
-		name = request.form['name']
-		cur = db.cursor()
-		cur.execute("INSERT INTO Journey(event) VALUES((%s))", (name))
-		cur = db.cursor()
-		cur.execute("SELECT MAX(journeyid) FROM Journey")
-		journeyid = cur.fetchall()[0]['MAX(journeyid)']
-		cur = db.cursor()
-		cur.execute("INSERT INTO ClassJourney(classid, journeyid) VALUES((%s), (%s))", ((classid, journeyid)))
-		return redirect(url_for('class_route', classid = classid))
-	else:
-		return render_template('addjourney.html', ref = classid)
-
 
 @app.route('/journey', methods=['GET', 'POST'])
 def journey_route():
@@ -127,25 +97,25 @@ def journey_route():
 
 @app.route('/class')
 def class_route():
-	classid = request.args.get('classid')
-	cur = db.cursor()
-	cur.execute("SELECT * FROM Class")
-	classes = cur.fetchall()
-	if not classid:
-		return render_template('class.html', classes=classes)
-	else:
-		cur = db.cursor()
-		cur.execute("SELECT username FROM User WHERE classid = (%s)", (classid))
-		users = cur.fetchall()
-		cur = db.cursor()
-		cur.execute("SELECT * FROM ClassJourney WHERE classid = (%s)",(classid))
-		classjournies = cur.fetchall()
-		classjourniesdetails = {}
-		for journey in classjournies:
-			cur = db.cursor()
-			cur.execute("SELECT event FROM Journey WHERE journeyid = (%s)", (journey['journeyid']))
-			classjourniesdetails[journey['journeyid']] = cur.fetchall()[0]
-		return render_template('class.html', classes = classes, users = users, classjournies = classjournies, classjourniesdetails = classjourniesdetails)
+    classid = request.args.get('classid')
+    cur = db.cursor()
+    cur.execute("SELECT * FROM Class")
+    classes = cur.fetchall()
+    if not classid:
+        return render_template('class.html', classes=classes)
+    else:
+        cur = db.cursor()
+        cur.execute("SELECT username FROM User WHERE classid = (%s)", (classid))
+        users = cur.fetchall()
+        cur = db.cursor()
+        cur.execute("SELECT * FROM ClassJourney WHERE classid = (%s)",(classid))
+        classjournies = cur.fetchall()
+        classjourniesdetails = {}
+        for journey in classjournies:
+            cur = db.cursor()
+            cur.execute("SELECT event FROM Journey WHERE journeyid = (%s)", (journey['journeyid']))
+            classjourniesdetails[journey['journeyid']] = cur.fetchall()[0]
+        return render_template('class.html', classes = classes, users = users, classjournies = classjournies, classjourniesdetails = classjourniesdetails)
 
 @app.route('/draw')
 def draw_route():
@@ -155,6 +125,24 @@ def draw_route():
     username = session['username']
     journey = request.args.get('journeyud')
     return render_template('draw.html', journeyid=journey, username=username)
+
+@app.route('/react', methods=['GET', 'POST'])
+def reaction_route():
+    if request.method == 'GET':
+        if 'username' not in session:
+                return redirect('403.html', 403)
+
+        types = ['text', 'draw']
+        username = session['username']
+        journeyid = request.args.get('journeyid')
+        return render_template('reaction.html', journeyid=journeyid, username=username, type=types[random.randint(0, 1)])
+    else:
+        text = request.form['reaction']
+        journeyid = request.args.get('journeyid')
+
+        cursor = db.cursor()
+        cursor.execute("UPDATE Reactions SET reactiondata = (%s) WHERE journeyid = (%s) AND username = (%s)", (text, journeyid, session['username']))
+        return redirect(url_for('profile_route', username=session['username']))
 
 
 if __name__ == "__main__":

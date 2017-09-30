@@ -21,7 +21,7 @@
 
         {% for journey in journies %}
             <h3 href="{{url_for('journey_route', journeyid=journey['journeyid'])}}">{{journey['event']}}</h3>
-            <a class="button button-primary" href="{{url_for('draw_route', username=username, journeyid=journey['journeyid'])}}">Submit a reaction...</a>
+            <a class="button button-primary" href="{{url_for('reaction_route', username=username, journeyid=journey['journeyid'])}}">Submit a reaction...</a>
 
             <h5>Reflection</h5>
             {% if journey['event'] in reflections %}
