@@ -1,0 +1,18 @@
+{% extends "index.html" %}
+{% block content %}
+    <h1>Create Account</h1>
+
+	<form method="post" id="new_user_form">
+		<h3>Username:</h3>
+		<input type="text" form="new_user_form" id="new_username_input" name="username">
+		<br>
+		<h3>Password:</h3>
+		<input type="password" form="new_user_form" id="new_password1_input" name="password1">
+		<br>
+		<h3>Email:</h3>
+		<input type="text" form="new_user_form" id="new_email_input" name="email">
+		<br>
+		<input type="submit" form="new_user_form" id="new_submit">
+	</form>
+
+{% endblock %}
