@@ -32,6 +32,17 @@ def logout_route():
     session.pop('username')
     return redirect(url_for('login_route'))
 
+@app.route('/search', methods=['GET','POST'])
+def search_route():
+	search = requests.form['search']
+	cur = db.cursor()
+	cur.execute("SELECT * FROM Journey WHERE event LIKE (%s)", (search))
+	res = cur.fetchall()
+	cur = db.cursor()
+	cur.execute("SELECT * FROM Class WHERE schoolname LIKE (%s)", (search))
+	res2 = cur.fetchall()
+	return render_template('search.html', journeys = res, classes = res2, term = search)
+
 @app.route('/profile', methods=['GET', 'POST'])
 def profile_route():
     while True: #Not actually a loop, but we wanna be able to break
