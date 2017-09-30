@@ -71,8 +71,13 @@
           </div>
           <div class="seven columns">
               <ul>
+                  <form action="/search" method="post" id="search_form"></form>
+                  <li><input type="textbox" form="search_form" name="search">
+                      <input type="submit" form="search_form" id="search_submit" value="Search!"></input>
+                  </li>
                   <li><a href="{{url_for('journey_route')}}">Journeys</a></li>
-                  <li><a href="{{url_for('class_route')}}">Classes</a></li>                  
+                  <li><a href="{{url_for('class_route')}}">Classes</a></li>
+                  <li><a href="{{url_for('search_route')}}">Search</a></li>                  
                   {% if 'username' in session %}
                   <li><a href="{{url_for('profile_route')}}">My Profile </a></li>
                   <li><a href="{{url_for('logout_route')}}">Logout</a></li>

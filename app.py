@@ -34,7 +34,7 @@ def logout_route():
 
 @app.route('/search', methods=['GET','POST'])
 def search_route():
-	search = requests.form['search']
+	search = request.form['search']
 	cur = db.cursor()
 	cur.execute("SELECT * FROM Journey WHERE event LIKE (%s)", (search))
 	res = cur.fetchall()
