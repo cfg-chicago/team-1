@@ -43,12 +43,17 @@
           <div class="sixteen columns">
               <ul>
                   {% if 'username' in session %}
-                  <li><a href="{{url_for('app.profile_route')}}"> Profile </a></li>
+                  <li><a href="{{url_for('profile_route')}}"> Profile </a></li>
                   {% else %}
-                  <li><a href="{{url_for('app.login_route')}}">Login</a></li>
+                  <li><a href="{{url_for('login_route')}}">Login</a></li>
                   {% endif %}
-                  <li><a href="{{url_for('app.journey_route')}}">Journeys</a></li>
-                  <li><a href="{{url_for('app.class_route')}}">Class</a></li>
+                  <li><a href="{{url_for('journey_route')}}">Journeys</a></li>
+
+                  {% if 'username' in session %}
+                  <li><a href="{{url_for('profile_route')}}"> Profile </a></li>
+                  {% else %}
+                  <li><a href="{{url_for('class_route')}}">Class</a></li>
+                  {% endif %}
               </ul>
           </div>
       </nav>

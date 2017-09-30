@@ -17,7 +17,7 @@ CREATE TABLE Journey (
 CREATE TABLE Reactions (
     type VARCHAR(20),
     username VARCHAR(50),
-    journeyid Int PRIMARY KEY,
+    journeyid Int,
     reactiondata VARCHAR(2000),
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -44,17 +44,51 @@ CREATE TABLE Class (
     gradyear Int
 );
 
+CREATE TABLE UserJourney (
+    username VARCHAR(50),
+    journeyid INT
+);
+
 CREATE TABLE ClassJourney (
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     classid INT,
-    journeyid Int
-)
+    journeyid Int PRIMARY KEY
+);
 
 INSERT INTO Journey(journeyid, event)
-VALUES (10, "boi");
+VALUES (1, "Bowling");
+INSERT INTO Journey(journeyid, event)
+VALUES (2, "Rock Climbing");
+INSERT INTO Journey(journeyid, event)
+VALUES (3, "Ping Pong");
 
 INSERT INTO User(username, password, classid, bio, picture)
-VALUES ("sidharth", "hunter2", 2020, "i don't know flask", "test.jpg");
-
+VALUES ("Sidharth", "hunter2", 2020, "my name is sid", "test.jpg");
 INSERT INTO User(username, password, classid, bio, picture)
-VALUES ("kevin", "hunter2", 2020, "working on flask", "new.jpg");
+VALUES ("Kevin", "hunter2", 2020, "my name is kevin", "new.jpg");
+INSERT INTO User(username, password, classid, bio, picture)
+VALUES ("Zi", "hunter2", 2020, "my name is zi", "test.jpg");
+INSERT INTO User(username, password, classid, bio, picture)
+VALUES ("Trent", "hunter2", 2020, "my name is trent", "new.jpg");
+
+INSERT INTO UserJourney(username, journeyid)
+VALUES ("Kevin", 1);
+INSERT INTO UserJourney(username, journeyid)
+VALUES ("Kevin", 2);
+INSERT INTO UserJourney(username, journeyid)
+VALUES ("Kevin", 3);
+INSERT INTO UserJourney(username, journeyid)
+VALUES ("Sidharth", 2);
+INSERT INTO UserJourney(username, journeyid)
+VALUES ("Zi", 1);
+INSERT INTO UserJourney(username, journeyid)
+VALUES ("Zi", 3);
+INSERT INTO UserJourney(username, journeyid)
+VALUES ("Trent", 1);
+
+INSERT INTO Reactions(type, username, journeyid, reactiondata)
+VALUES ("text", "Kevin", 1, "Stubbed my big toe Bowling")
+INSERT INTO Reactions(type, username, journeyid, reactiondata)
+VALUES ("text", "Sidharth", 2, "Had a great time")
+INSERT INTO Reactions(type, username, journeyid, reactiondata)
+VALUES ("text", "Trent", 1, "Stubbed my little toe Bowling")
