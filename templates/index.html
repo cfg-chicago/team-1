@@ -35,21 +35,23 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
   <!--Home Head-->
-  <a><img src="../static/white_bkgd.png"></a>
 
   <!--Navigation-->
   <div class="band navigation">
       <nav class="container primary">
-          <div class="sixteen columns">
+          <div class="four columns">
+            <a href="{{url_for('index')}}"><img src="../static/white_bkgd.png"></a>
+          </div>
+          <div class="seven columns">
               <ul>
+                  <li><a href="{{url_for('journey_route')}}">Journeys</a></li>
+                  <li><a href="{{url_for('class_route')}}">Classes</a></li>                  
                   {% if 'username' in session %}
-                  <li><a href="{{url_for('logout_route')}}">Logout</a></li>
                   <li><a href="{{url_for('profile_route')}}">My Profile </a></li>
+                  <li><a href="{{url_for('logout_route')}}">Logout</a></li>
                   {% else %}
                   <li><a href="{{url_for('login_route')}}">Login</a></li>
                   {% endif %}
-                  <li><a href="{{url_for('journey_route')}}">Journeys</a></li>
-                  <li><a href="{{url_for('class_route')}}">Classes</a></li>
               </ul>
           </div>
       </nav>
