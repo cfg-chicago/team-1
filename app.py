@@ -1,19 +1,9 @@
-from flask import *
-from flask.ext.mysql import MySQL
+from flask import Flask, render_template, request, redirect, url_for, session
+import extensions
+import config
 
-import controllers
-app = Flask(__name__)
-
-mysql = MySQL()
-mysql.init_app(app)
-
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = ''
-app.config['MYSQL_DATABASE_DB'] = 'cfg'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-
-db = mysql.connect()
-cursor = db.cursor()
+app = Flask(__name__, template_folder='templates')
+db = extensions.connect_to_database()
 
 @app.route('/')
 def index():
@@ -21,38 +11,55 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_route():
-    errors = []
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+	errors = []
+	if request.method == 'POST':
+		username = request.form['username']
+		password = request.form['password']
+		cursor = db.cursor()
+		cursor.execute('''SELECT password FROM User WHERE username = \"{}\"'''.format(username))
+		if cursor.rowcount != 0:
+			data = cursor.fetchall()[0]
+			if data['password'] == password:
+				cursor.execute('''SELECT bio FROM User WHERE username = \"{}\"'''.format(username))
+				bio = cursor.fetchall()[0]['bio']
 
-        cursor.execute('''SELECT password FROM User WHERE username = \"{}\"'''.format(username))
-        if cursor.rowcount != 0:
-            data = cursor.fetchall()[0][0]
-            if data == password:
-                cursor.execute('''SELECT bio FROM User WHERE username = \"{}\"'''.format(username))
-                bio = cursor.fetchall()[0][0]
+				cursor.execute('''SELECT journeyid FROM UserJourney WHERE username = \"{}\"'''.format(username))
+				userjournies = cursor.fetchall()
 
-                cursor.execute('''SELECT journeyid FROM UserJourney WHERE username = \"{}\"'''.format(username))
-                userjournies = cursor.fetchall()
+				# Turn tuple of single-tuple items into list
+				userjournies = [x['journeyid'] for x in userjournies] 
+				session['username'] = username
+				return redirect(url_for('profile_route', username=username,
+													userjournies=userjournies,
+													bio=bio))
+			else:
+				errors.append("Wrong password")
+		return render_template('login.html', errors= errors)
+	return render_template('login.html', errors= errors)
 
-                # Turn tuple of single-tuple items into list
-                userjournies = [x[0] for x in data] 
-                return redirect(url_for('profile_route', username=username,
-                                                   userjournies=userjournies,
-                                                   bio=bio))
-            else:
-                errors.append("Wrong password")
-        return render_template('login.html', errors= errors)
-    return render_template('login.html', errors= errors)
+@app.route('/logout', methods=['GET', 'POST'])
+def logout_route():
+	session.pop(username)
+	return redirect(url_for('login_route'))
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile_route():
-     username = request.args.get('username')
-     raise
-#    cursor.execute('''SELECT bio FROM User WHERE username = \"{}\"'''.format(username))
-#    cursor.execute('''SELECT bio FROM User WHERE username = \"{}\"'''.format(username))
-#    cursor.execute('''SELECT bio FROM User WHERE username = \"{}\"'''.format(username))
+	username = request.args.get('username')
+	bio = request.args.get('bio')
+	userjournies = request.args.getlist('userjournies')
+	journies = []
+	reflections = {}
+	for x in userjournies:
+		cur = db.cursor()
+		cur.execute("SELECT * FROM Journey WHERE journeyid = (%s)", (x))
+		journey = cur.fetchall()[0]
+		journies.append(journey)
+		cur = db.cursor()
+		cur.execute("SELECT * FROM Reflection WHERE journeyid = (%s)", (x))
+		if cur.rowcount:
+			reflection = cur.fetchall()[0]
+			reflections[journey['event']] = reflection
+	return render_template('profile.html', username = username, bio = bio, userjournies = userjournies, journies = journies, reflections=reflections)
 
 
 @app.route('/journey', methods=['GET', 'POST'])
@@ -90,4 +97,7 @@ def class_route():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=4000, debug=True)
+	app.secret_key = 'super secret key'
+	app.config['SESSION_TYPE'] = 'filesystem'
+
+	app.run(host='0.0.0.0', port=4000, debug=True)

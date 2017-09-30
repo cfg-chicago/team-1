@@ -4,6 +4,11 @@
     {% if not journeyselected %}
     <select>
     {% for journey in journies %}
+    <form method="post" id="select_journey">
+            <option form="select_journey" value="{{journey}}" name="{{journey['journeyid']}}">{{journey['name']}}</option>
+            <br>
+            <input type="submit" form="select_journey" id="submit_journey">
+        </form>
         <option value="{{journey}}">{{journey}}</option>
     {% endfor %}
     {% else %}

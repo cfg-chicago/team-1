@@ -1,11 +1,8 @@
-import os
-basedir = os.path.abspath(os.path.dirname(__file__))
-
 env = dict(
 	host = '0.0.0.0',
 	port = 4000,
 	user = 'root',
-	password = 'team1'
+	password = 'team1',
 	db = 'cfg')
 
 class Config(object):

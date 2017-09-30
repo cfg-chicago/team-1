@@ -87,8 +87,11 @@ INSERT INTO UserJourney(username, journeyid)
 VALUES ("Trent", 1);
 
 INSERT INTO Reactions(type, username, journeyid, reactiondata)
-VALUES ("text", "Kevin", 1, "Stubbed my big toe Bowling")
+VALUES ("text", "Kevin", 1, "Stubbed my big toe Bowling");
 INSERT INTO Reactions(type, username, journeyid, reactiondata)
-VALUES ("text", "Sidharth", 2, "Had a great time")
+VALUES ("text", "Sidharth", 2, "Had a great time");
 INSERT INTO Reactions(type, username, journeyid, reactiondata)
-VALUES ("text", "Trent", 1, "Stubbed my little toe Bowling")
+VALUES ("text", "Trent", 1, "Stubbed my little toe Bowling");
+
+INSERT INTO Reflection(journeyid, text, username, public)
+VALUES (1, "I had so much fun!@@@!!#$!#!", "Kevin", 1);

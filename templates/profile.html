@@ -7,14 +7,19 @@
 <h3>{{session['username']}}'s Profile!</h3>
 <h>Bio</h>
 <a>{{bio}}</a>
+<br>
 <a>{{class}}</a>
-{% for journeyid in userjournies %}
-<a href="{{url_for('app.journey_route', username='username')}}">{{journies['journeyid']['event']}}</h>
+<br>
+{% for journey in journies %}
+<a href="{{url_for('journey_route', journeyid=journeyid)}}">{{journey['event']}}</a>
 
 <br>
-<h>Reflection</h>
-{% if reflection['journeyid']['public'] %}
-    {{reflection['journeyid']['apiurl']}}
+<h>Reflection:</h>
+<br>
+{% if journey['event'] in reflections %}
+    {% if reflections[journey['event']]['public'] %}
+        {{reflections[journey['event']]['apiurl']}}
+    {% endif %}
 {% endif %}
 {% if 'username' in session %}
     {% if session['username'] == profilename %}
